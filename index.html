@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MASSO · Plataforma de gestión</title>
+<meta name="description" content="Plataforma de gestión MASSO — Constructora Huequecura · SEMACO · Río Bravo">
+<meta name="theme-color" content="#161716">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MASSO">
+<meta name="author" content="Allan Cepeda · Gerencia MASSO">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="config.js"></script>
+<style>
+:root{--y:#f5c400;--k:#161716}
+html,body{margin:0;height:100%;background:var(--k);overflow:hidden;font-family:Arial,Helvetica,sans-serif}
+#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f4f2ec}
+/* Pantalla de carga */
+#splash{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 38%,#26271f 0%,#161716 62%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .45s ease}
+#splash.fuera{opacity:0;pointer-events:none}
+.sp-c{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:-6vh}
+.sp-ic{width:104px;height:104px;filter:drop-shadow(0 10px 24px rgba(245,196,0,.18));animation:pulso 1.8s ease-in-out infinite}
+.sp-w{font-weight:900;font-size:34px;letter-spacing:10px;margin:18px 0 0 10px;font-family:'Arial Black',Arial,sans-serif}
+.sp-s{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--y)}
+.sp-bar{width:160px;height:3px;background:#2d2e29;margin-top:26px;overflow:hidden;border-radius:2px}.sp-bar i{display:block;width:40%;height:100%;background:var(--y);animation:barra 1.2s ease-in-out infinite}
+.sp-msg{margin-top:16px;font-size:12px;color:#9a9a92;min-height:16px;text-align:center;padding:0 24px}
+.sp-f{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;color:#9a9a92;font-size:12px}
+.sp-seal{width:38px;height:38px;border:1.5px solid var(--y);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--y);font-weight:800;font-size:13px;letter-spacing:1px;position:relative}
+.sp-seal:after{content:'';position:absolute;inset:3px;border:1px dashed rgba(245,196,0,.45);border-radius:50%}
+.sp-f b{display:block;color:#e8e6df;font-size:13px;letter-spacing:.5px}
+@keyframes barra{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
+@keyframes pulso{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+/* Hoja inferior (permiso de notificaciones / instalar) */
+.hoja{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;width:min(440px,calc(100% - 24px));background:#fff;color:var(--k);border-top:5px solid var(--y);box-shadow:0 18px 50px rgba(0,0,0,.35);padding:18px 18px 16px;display:none}
+.hoja.ver{display:block;animation:sube .25s ease}
+.hoja h3{margin:0 0 6px;font-size:17px}.hoja p{margin:0 0 14px;font-size:13px;color:#555;line-height:1.45}
+.hoja .acc{display:flex;gap:10px;justify-content:flex-end}
+.hoja button{font:inherit;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:11px 16px;border:1.5px solid var(--k);background:#fff;cursor:pointer}
+.hoja button.si{background:var(--y);border-color:var(--y)}
+@keyframes sube{from{transform:translate(-50%,20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+</style>
+</head>
+<body>
+<div id="splash">
+  <div class="sp-c">
+    <svg class="sp-ic" viewBox="100 62 312 388" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd21a"/><stop offset="1" stop-color="#f0b800"/></linearGradient></defs><path d="M256 70 L404 122 V246 C404 338 344 404 256 442 C168 404 108 338 108 246 V122 Z" fill="url(#g)"/><path d="M174 304 V176 L256 262 L338 176 V304" fill="none" stroke="#161716" stroke-width="38"/><g fill="none" stroke="#161716" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M222 384 L238 342 L254 384 M228 369 H248"/><path d="M292 349 A18 18 0 1 0 292 377"/><path d="M190 364 H208 M304 364 H322" stroke-width="5"/></g></svg>
+    <div class="sp-w">MASSO</div>
+    <div class="sp-s">Plataforma de gestión</div>
+    <div class="sp-bar"><i></i></div>
+    <div class="sp-msg" id="spMsg"></div>
+  </div>
+  <div class="sp-f"><span class="sp-seal">AC</span><span><b>Allan Cepeda</b>Gerencia MASSO · Huequecura · SEMACO · Río Bravo</span></div>
+</div>
+
+<iframe id="app" title="MASSO" allow="camera; clipboard-write; fullscreen"></iframe>
+
+<div class="hoja" id="hPush">
+  <h3>🔔 Activar notificaciones</h3>
+  <p>Recibirá en este equipo los avisos de MASSO que elija (trabajadores nuevos, vencimientos, RIOHS). Puede desactivarlas cuando quiera.</p>
+  <div class="acc"><button onclick="cerrarHoja('hPush');aIframe({masso:'push-error',error:'Activación cancelada.'})">Ahora no</button><button class="si" onclick="activarPush()">Permitir</button></div>
+</div>
+<div class="hoja" id="hInst">
+  <h3>Instalar la app MASSO</h3>
+  <p id="hInstTxt">Acceso directo en su teléfono o computador, pantalla completa y notificaciones.</p>
+  <div class="acc"><button onclick="cerrarHoja('hInst');try{localStorage.setItem('masso_inst_no','1')}catch(e){}">Ahora no</button><button class="si" id="btnInst" onclick="instalar()">Instalar</button></div>
+</div>
+
+<script>
+var EXEC = self.MASSO_EXEC, FUENTE = null, VAPID = '', REG = null, INST = null;
+var prm = new URLSearchParams(location.search), vista = prm.get('v') || '';
+function $(i){return document.getElementById(i)}
+function cargar(v){ $('app').src = EXEC + (v ? '?p=' + encodeURIComponent(v) : ''); }
+function listo(){ var s=$('splash'); if(s.classList.contains('fuera'))return; s.classList.add('fuera'); setTimeout(function(){s.style.display='none'},500); }
+function aIframe(m){ try{ (FUENTE || $('app').contentWindow).postMessage(m,'*'); }catch(e){} }
+function cerrarHoja(id){ $(id).classList.remove('ver'); }
+var esApp = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+var esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function equipo(){ var u=navigator.userAgent, so=/android/i.test(u)?'Android':esIOS?'iPhone/iPad':/windows/i.test(u)?'Windows':/mac os/i.test(u)?'Mac':/linux/i.test(u)?'Linux':'Equipo';
+  var nav=/edg\//i.test(u)?'Edge':/chrome|crios/i.test(u)?'Chrome':/firefox|fxios/i.test(u)?'Firefox':/safari/i.test(u)?'Safari':'Navegador';
+  return so+' · '+nav+(esApp?' (app)':''); }
+function pushSoportado(){ return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+
+// --- IndexedDB: el service worker lee aquí el identificador de la suscripción ---
+function idb(){ return new Promise(function(ok,ko){ var r=indexedDB.open('masso',1); r.onupgradeneeded=function(){r.result.createObjectStore('kv')}; r.onsuccess=function(){ok(r.result)}; r.onerror=ko; }); }
+function guardarSid(sid){ return idb().then(function(db){ return new Promise(function(ok){ var t=db.transaction('kv','readwrite'); if(sid)t.objectStore('kv').put(sid,'sid'); else t.objectStore('kv').delete('sid'); t.oncomplete=ok; t.onerror=ok; }); }); }
+function leerSid(){ return idb().then(function(db){ return new Promise(function(ok){ var q=db.transaction('kv').objectStore('kv').get('sid'); q.onsuccess=function(){ok(q.result||'')}; q.onerror=function(){ok('')}; }); }).catch(function(){return ''}); }
+
+// --- Mensajes desde la plataforma (iframe) ---
+window.addEventListener('message', function(e){
+  var d = e.data || {}; if (!d.masso) return;
+  if (d.masso === 'hola') { FUENTE = e.source; leerSid().then(function(sid){ aIframe({ masso:'shell', push: pushSoportado(), permiso: pushSoportado() ? Notification.permission : 'no', sid: sid, app: esApp, version: self.MASSO_VERSION }); }); }
+  if (d.masso === 'listo') { FUENTE = e.source || FUENTE; listo(); }
+  if (d.masso === 'push-activar') { FUENTE = e.source || FUENTE; VAPID = d.vapid; if (!pushSoportado()) return aIframe({masso:'push-error',error:'Este navegador no admite notificaciones.'});
+    if (esIOS && !esApp) return aIframe({masso:'push-error',error:'En iPhone/iPad primero instale la app: Compartir → “Agregar a inicio”, y ábrala desde el ícono.'});
+    $('hPush').classList.add('ver'); }
+  if (d.masso === 'push-sid') { guardarSid(d.sid); }
+  if (d.masso === 'push-desactivar') { guardarSid(''); if (REG) REG.pushManager.getSubscription().then(function(s){ if(s) s.unsubscribe(); }); }
+});
+function b64u(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='='; var b=atob(s),u=new Uint8Array(b.length); for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i); return u; }
+function activarPush(){
+  cerrarHoja('hPush');
+  Notification.requestPermission().then(function(p){
+    if (p !== 'granted') throw new Error('Permiso de notificaciones denegado. Puede habilitarlo en la configuración del navegador.');
+    return (REG ? Promise.resolve(REG) : navigator.serviceWorker.ready).then(function(reg){
+      return reg.pushManager.getSubscription().then(function(s){ return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(VAPID) }); });
+    });
+  }).then(function(sub){ aIframe({ masso:'push-sub', sub: sub.toJSON(), equipo: equipo() }); })
+    .catch(function(err){ aIframe({ masso:'push-error', error: String(err.message || err) }); });
+}
+
+// --- Instalación ---
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); INST = e; var no=false; try{no=localStorage.getItem('masso_inst_no')}catch(x){} if(!esApp && !no) setTimeout(function(){ $('hInst').classList.add('ver'); }, 4000); });
+function instalar(){ cerrarHoja('hInst'); if (INST) { INST.prompt(); INST = null; } }
+if (esIOS && !esApp) { var no=false; try{no=localStorage.getItem('masso_inst_no')}catch(x){} if(!no){ $('hInstTxt').innerHTML='En iPhone/iPad: toque <b>Compartir</b> <span style="font-size:15px">⎋</span> y luego <b>“Agregar a inicio”</b>. Así tendrá el ícono MASSO y podrá recibir notificaciones.'; $('btnInst').style.display='none'; setTimeout(function(){ $('hInst').classList.add('ver'); }, 5000); } }
+
+// --- Service worker y arranque ---
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(function(r){ REG = r; }).catch(function(){});
+  navigator.serviceWorker.addEventListener('message', function(e){ if (e.data && e.data.masso === 'ir') cargar(e.data.v || ''); });
+}
+if (!navigator.onLine) $('spMsg').textContent = 'Sin conexión a internet. Se cargará al reconectar.';
+window.addEventListener('online', function(){ $('spMsg').textContent=''; if(!$('splash').classList.contains('fuera')) cargar(vista); });
+setTimeout(function(){ if(!$('splash').classList.contains('fuera')) $('spMsg').textContent='Conectando con la plataforma…'; }, 7000);
+setTimeout(listo, 30000);
+cargar(vista);
+if (vista) history.replaceState(null, '', location.pathname);
+</script>
+</body>
+</html>
