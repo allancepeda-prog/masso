@@ -53,8 +53,8 @@
       ]
     },
     {
-      "name": "Acreditación documental",
-      "short_name": "Acreditación",
+      "name": "Indicadores",
+      "short_name": "Indicadores",
       "url": "./?v=dashboard",
       "icons": [
         {
