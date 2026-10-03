@@ -18,8 +18,9 @@
 <script src="config.js"></script>
 <style>
 :root{--y:#f5c400;--k:#161716}
-html,body{margin:0;height:100%;background:var(--k);overflow:hidden;font-family:Arial,Helvetica,sans-serif}
-#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f4f2ec}
+html,body{margin:0;height:100%;background:linear-gradient(var(--k) 50%,#fff 50%);overflow:hidden;font-family:Arial,Helvetica,sans-serif}
+/* Márgenes seguros: la plataforma no queda bajo la barra de estado, la cámara ni el indicador de inicio */
+#app{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);bottom:env(safe-area-inset-bottom,0px);width:100%;height:auto;border:0;background:#f4f2ec}
 /* Pantalla de carga */
 #splash{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 38%,#26271f 0%,#161716 62%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .45s ease}
 #splash.fuera{opacity:0;pointer-events:none}
@@ -90,10 +91,15 @@ function idb(){ return new Promise(function(ok,ko){ var r=indexedDB.open('masso'
 function guardarSid(sid){ return idb().then(function(db){ return new Promise(function(ok){ var t=db.transaction('kv','readwrite'); if(sid)t.objectStore('kv').put(sid,'sid'); else t.objectStore('kv').delete('sid'); t.oncomplete=ok; t.onerror=ok; }); }); }
 function leerSid(){ return idb().then(function(db){ return new Promise(function(ok){ var q=db.transaction('kv').objectStore('kv').get('sid'); q.onsuccess=function(){ok(q.result||'')}; q.onerror=function(){ok('')}; }); }).catch(function(){return ''}); }
 
+// --- Sesión guardada en la app (15 días): el marco de Google puede perder su almacenamiento al cerrar la app ---
+function sesion(){ try{ var o=JSON.parse(localStorage.getItem('masso_ses')||'null'); if(o){ if(o.exp>Date.now()) return o; return { email:o.email||'' }; } }catch(e){} return {}; }
+function guardarSesion(d){ try{ var o=sesion(), email=d.email||o.email||'';
+  localStorage.setItem('masso_ses', JSON.stringify(d.token ? { token:d.token, email:email, exp:Date.now()+(d.dias||15)*864e5 } : { email:email, exp:0 })); }catch(e){} }
 // --- Mensajes desde la plataforma (iframe) ---
 window.addEventListener('message', function(e){
   var d = e.data || {}; if (!d.masso) return;
-  if (d.masso === 'hola') { FUENTE = e.source; leerSid().then(function(sid){ aIframe({ masso:'shell', push: pushSoportado(), permiso: pushSoportado() ? Notification.permission : 'no', sid: sid, app: esApp, version: self.MASSO_VERSION }); }); }
+  if (d.masso === 'hola') { FUENTE = e.source; var ses = sesion(); leerSid().then(function(sid){ aIframe({ masso:'shell', push: pushSoportado(), permiso: pushSoportado() ? Notification.permission : 'no', sid: sid, app: esApp, version: self.MASSO_VERSION, token: ses.token || '', email: ses.email || '' }); }); }
+  if (d.masso === 'sesion') { guardarSesion(d); }
   if (d.masso === 'listo') { FUENTE = e.source || FUENTE; listo(); }
   if (d.masso === 'push-activar') { FUENTE = e.source || FUENTE; VAPID = d.vapid; if (!pushSoportado()) return aIframe({masso:'push-error',error:'Este navegador no admite notificaciones.'});
     if (esIOS && !esApp) return aIframe({masso:'push-error',error:'En iPhone/iPad primero instale la app: Compartir → “Agregar a inicio”, y ábrala desde el ícono.'});
