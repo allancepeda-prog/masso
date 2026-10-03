@@ -18,9 +18,9 @@
 <script src="config.js"></script>
 <style>
 :root{--y:#f5c400;--k:#161716}
-html,body{margin:0;height:100%;background:linear-gradient(var(--k) 50%,#fff 50%);overflow:hidden;font-family:Arial,Helvetica,sans-serif}
-/* Márgenes seguros: la plataforma no queda bajo la barra de estado, la cámara ni el indicador de inicio */
-#app{position:fixed;left:0;top:env(safe-area-inset-top,0px);width:100%;height:calc(100% - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));border:0;background:#f4f2ec;display:block}
+html,body{margin:0;height:100%;background:var(--k);overflow:hidden;font-family:Arial,Helvetica,sans-serif}
+/* Margen superior seguro: la plataforma no queda bajo la barra de estado ni la cámara (abajo llega hasta el borde) */
+#app{position:fixed;left:0;top:env(safe-area-inset-top,0px);width:100%;height:calc(100% - env(safe-area-inset-top,0px));border:0;background:#f4f2ec;display:block}
 /* Pantalla de carga */
 #splash{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 38%,#26271f 0%,#161716 62%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .45s ease}
 #splash.fuera{opacity:0;pointer-events:none}
